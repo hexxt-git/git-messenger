@@ -5,6 +5,7 @@ import { MessageList } from './components/MessageList.js';
 import { StatusBar } from './components/StatusBar.js';
 import { Composer } from './components/Composer.js';
 import { BranchDialog } from './components/BranchDialog.js';
+import { HelpDialog } from './components/HelpDialog.js';
 import type { Message, Identity, SyncState } from './types.js';
 import { readMessages, writeMessage } from './git/messages.js';
 import { sync as runSync, pushWithRetry } from './git/sync.js';
@@ -29,6 +30,7 @@ export function App({ cwd, identity, repoName, initialBranch, pollInterval }: Ap
   const [failedIds, setFailedIds] = useState<Map<string, string>>(new Map());
 
   const [isBranchSelectorOpen, setIsBranchSelectorOpen] = useState(false);
+  const [isHelpOpen, setIsHelpOpen] = useState(false);
   const [branches, setBranches] = useState<string[]>([]);
 
   const loadMessages = useCallback(async () => {
@@ -74,10 +76,18 @@ export function App({ cwd, identity, repoName, initialBranch, pollInterval }: Ap
     if ((key.ctrl && input === 'c') || (key.ctrl && input === 'd') || key.escape) {
       if (isBranchSelectorOpen) {
         setIsBranchSelectorOpen(false);
+      } else if (isHelpOpen) {
+        setIsHelpOpen(false);
       } else {
         exit();
         process.exit(0);
       }
+      return;
+    }
+
+    if (key.ctrl && input === 'g') {
+      setIsHelpOpen((prev) => !prev);
+      return;
     }
 
     if (key.ctrl && input === 'b') {
@@ -163,16 +173,13 @@ export function App({ cwd, identity, repoName, initialBranch, pollInterval }: Ap
         isBranchSelectorOpen={isBranchSelectorOpen}
       />
 
-      <Box flexGrow={1} position="relative">
-        <MessageList
-          messages={messages}
-          pendingIds={pendingIds}
-          failedIds={failedIds}
-          height={(process.stdout.rows || 24) - 6}
-        />
-
-        {isBranchSelectorOpen && (
-          <Box position="absolute" top={2} left={4}>
+      <Box flexGrow={1} flexDirection="column">
+        {isHelpOpen ? (
+          <Box flexGrow={1} justifyContent="center" alignItems="center">
+            <HelpDialog />
+          </Box>
+        ) : isBranchSelectorOpen ? (
+          <Box flexGrow={1} justifyContent="center" alignItems="center">
             <BranchDialog
               branches={branches}
               currentBranch={branch}
@@ -181,6 +188,13 @@ export function App({ cwd, identity, repoName, initialBranch, pollInterval }: Ap
               onClose={() => setIsBranchSelectorOpen(false)}
             />
           </Box>
+        ) : (
+          <MessageList
+            messages={messages}
+            pendingIds={pendingIds}
+            failedIds={failedIds}
+            height={(process.stdout.rows || 24) - 6}
+          />
         )}
       </Box>
 
@@ -190,7 +204,7 @@ export function App({ cwd, identity, repoName, initialBranch, pollInterval }: Ap
         participants={uniqueAuthors}
         messages={messages.length}
       />
-      <Composer onSubmit={handleSend} disabled={isBranchSelectorOpen} />
+      <Composer onSubmit={handleSend} disabled={isBranchSelectorOpen || isHelpOpen} />
     </Box>
   );
 }
