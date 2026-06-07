@@ -8,6 +8,8 @@ git-messenger
 
 `git-messenger` is a terminal-based chat client that uses regular Git commits and pushes to sync messages. It was specifically designed for environments and networks that only allow outbound SSH access (e.g., to `github.com`). If you can `git push`, you can chat!
 
+<img width="800" height="600" alt="git-messenger" src="https://github.com/user-attachments/assets/a5e213a2-77e1-429c-b5ec-eaf1763cd3d7" />
+
 ## Features
 
 - **Decentralized via Git**: One repository equals one group chat.
