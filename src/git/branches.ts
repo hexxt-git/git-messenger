@@ -12,9 +12,9 @@ export async function listBranches(cwd: string): Promise<string[]> {
   const { stdout } = await execa('git', ['branch', '-a', '--format=%(refname:short)'], { cwd });
   const branches = stdout
     .split('\n')
-    .map(b => b.trim())
+    .map((b: string) => b.trim())
     .filter(Boolean)
-    .map(b => b.replace(/^origin\//, ''));
+    .map((b: string) => b.replace(/^origin\//, ''));
 
   return Array.from(new Set(branches));
 }
@@ -22,7 +22,7 @@ export async function listBranches(cwd: string): Promise<string[]> {
 export async function getMessageCountForBranch(cwd: string, branch: string): Promise<number> {
   try {
     const { stdout } = await execa('git', ['ls-tree', '-r', '--name-only', branch, '--', 'messages/'], { cwd });
-    return stdout.split('\n').filter(l => l.trim().endsWith('.json')).length;
+    return stdout.split('\n').filter((l: string) => l.trim().endsWith('.json')).length;
   } catch {
     return 0;
   }

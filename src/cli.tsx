@@ -77,7 +77,7 @@ async function main() {
     process.exit(1);
   }
 
-  let identity;
+  let identity: import('./types.js').Identity | undefined;
   try {
     identity = await getIdentity(cwd);
   } catch (e: any) {
@@ -93,6 +93,10 @@ async function main() {
       console.error(e.message);
       process.exit(1);
     }
+  }
+
+  if (!identity || !branch) {
+    process.exit(1);
   }
 
   if (cli.flags.once) {
