@@ -71,6 +71,20 @@ async function main() {
     }
   }
 
+  // Hidden command for E2E testing
+  if (command === 'send') {
+    const body = args.join(' ');
+    if (!body) process.exit(1);
+    const { writeMessage } = await import('./git/messages.js');
+    const { commitMessage } = await import('./git/repo.js');
+    const { pushWithRetry } = await import('./git/sync.js');
+    const id = await writeMessage(cwd, await getIdentity(cwd), body);
+    await commitMessage(cwd, id);
+    let branch = cli.flags.branch || await getCurrentBranch(cwd);
+    await pushWithRetry(cwd, branch);
+    process.exit(0);
+  }
+
   if (!(await isGitRepo(cwd))) {
     console.error('Error: not a git repository.');
     console.error('Run `git init` or use `git-msg init <url>`.');
