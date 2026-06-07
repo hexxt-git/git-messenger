@@ -6,7 +6,7 @@ import os from 'node:os';
 import { execa } from 'execa';
 
 test('E2E: Client A sends message, Client B receives it', async (t) => {
-  const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'git-msg-e2e-'));
+  const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'git-messenger-e2e-'));
   const remoteDir = path.join(tmpDir, 'remote.git');
   const clientA = path.join(tmpDir, 'clientA');
   const clientB = path.join(tmpDir, 'clientB');
@@ -45,7 +45,7 @@ test('E2E: Client A sends message, Client B receives it', async (t) => {
   assert.doesNotMatch(bOut.stdout, /hello from alice/);
 
   // Client B manually triggers a pull via git (the app would do this via sync loop)
-  // Or we can just import sync and run it, or write a `git-msg sync` command.
+  // Or we can just import sync and run it, or write a `git-messenger sync` command.
   // Actually the app would do it, let's just use `git pull` which mimics what sync does.
   await execa('git', ['pull', '--rebase', 'origin', 'main'], { cwd: clientB });
 

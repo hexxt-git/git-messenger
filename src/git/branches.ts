@@ -40,7 +40,7 @@ export async function createOrphanBranch(cwd: string, branch: string): Promise<v
   
   await fs.mkdir(path.join(cwd, 'messages'), { recursive: true });
   await fs.writeFile(path.join(cwd, 'messages', '.gitkeep'), '');
-  await fs.writeFile(path.join(cwd, 'README.md'), '# git-msg chat branch\nThis is an auto-generated branch for a git-msg chat group.\n');
+  await fs.writeFile(path.join(cwd, 'README.md'), '# git-messenger chat branch\nThis is an auto-generated branch for a git-messenger chat group.\n');
   await execa('git', ['add', '.'], { cwd });
   await execa('git', ['commit', '-m', `chat: start ${branch}`], { cwd });
   try {

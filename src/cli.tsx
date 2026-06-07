@@ -11,7 +11,7 @@ import { readMessages } from './git/messages.js';
 const cli = meow(
   `
 	Usage
-	  $ git-msg
+	  $ git-messenger
 
 	Options
 	  --repo <path>     Open chat in another local clone
@@ -20,8 +20,8 @@ const cli = meow(
 	  --once            Print messages and exit (no TUI)
 	
 	Examples
-	  $ git-msg
-	  $ git-msg init <url>
+	  $ git-messenger
+	  $ git-messenger init <url>
 `,
   {
     importMeta: import.meta,
@@ -62,7 +62,7 @@ async function main() {
       console.error('Error: missing url for init');
       process.exit(1);
     }
-    const repoName = url.split('/').pop()?.replace(/\.git$/, '') || 'git-msg-chat';
+    const repoName = url.split('/').pop()?.replace(/\.git$/, '') || 'git-messenger-chat';
     cwd = path.resolve(cwd, repoName);
     try {
       await execa('git', ['clone', url, cwd], { stdio: 'inherit' });
@@ -87,7 +87,7 @@ async function main() {
 
   if (!(await isGitRepo(cwd))) {
     console.error('Error: not a git repository.');
-    console.error('Run `git init` or use `git-msg init <url>`.');
+    console.error('Run `git init` or use `git-messenger init <url>`.');
     process.exit(1);
   }
 

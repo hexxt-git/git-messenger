@@ -12,7 +12,7 @@ export function Header({ email, repo, branch, isBranchSelectorOpen }: HeaderProp
   return (
     <Box borderStyle="single" borderColor="blue" paddingX={1} justifyContent="space-between">
       <Box>
-        <Text color="blue">git-msg</Text>
+        <Text color="blue">git-messenger</Text>
         <Text color="gray"> · </Text>
         <Text>{email}</Text>
         <Text color="gray"> · </Text>

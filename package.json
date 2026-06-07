@@ -1,18 +1,29 @@
 {
-  "name": "git-msg",
+  "name": "git-messenger",
   "version": "1.0.0",
   "description": "",
   "main": "dist/cli.js",
+  "files": [
+    "dist"
+  ],
   "bin": {
-    "git-msg": "./dist/cli.js"
+    "git-messenger": "./dist/cli.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && cp README.md dist/",
     "start": "node dist/cli.js",
     "test": "tsx test/e2e.test.ts"
   },
   "keywords": [],
-  "author": "",
+  "author": "HEXXT <hexxt-git@users.noreply.github.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hexxt-git/git-messenger.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hexxt-git/git-messenger/issues"
+  },
+  "homepage": "https://github.com/hexxt-git/git-messenger#readme",
   "license": "ISC",
   "type": "module",
   "dependencies": {
